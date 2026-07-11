@@ -1,6 +1,6 @@
 {
   "name": "myclaude",
-  "version": "6.7.0",
+  "version": "6.7.1",
   "private": true,
   "description": "Claude Code multi-agent workflows (npx installer)",
   "license": "AGPL-3.0",

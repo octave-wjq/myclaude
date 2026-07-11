@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 set "EXIT_CODE=0"
-set "REPO=stellarlinkco/myclaude"
+set "REPO=octave-wjq/myclaude"
 set "VERSION=latest"
 set "OS=windows"
 
