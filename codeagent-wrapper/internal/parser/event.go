@@ -57,6 +57,14 @@ type UnifiedEvent struct {
 	// Opencode-specific fields (camelCase sessionID)
 	OpencodeSessionID string          `json:"sessionID,omitempty"`
 	Part              json.RawMessage `json:"part,omitempty"`
+
+	// Grok-specific fields. Grok streaming-json emits per-token events:
+	//   {"type":"thought","data":"..."}  reasoning (ignored)
+	//   {"type":"text","data":"..."}     assistant message chunk
+	//   {"type":"end","stopReason":"...","sessionId":"..."}
+	Data          string `json:"data,omitempty"`
+	StopReason    string `json:"stopReason,omitempty"`
+	GrokSessionID string `json:"sessionId,omitempty"`
 }
 
 // OpencodePart represents the part field in opencode events.

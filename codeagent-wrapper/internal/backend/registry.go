@@ -9,6 +9,7 @@ var registry = map[string]Backend{
 	"codex":    CodexBackend{},
 	"claude":   ClaudeBackend{},
 	"gemini":   GeminiBackend{},
+	"grok":     GrokBackend{},
 	"opencode": OpencodeBackend{},
 }
 

@@ -29,7 +29,7 @@ codeagent-wrapper --parallel [flags] < tasks_config
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--backend <name>` | Backend: codex, claude, gemini, opencode | codex |
+| `--backend <name>` | Backend: codex, claude, gemini, grok, opencode | codex |
 | `--agent <name>` | Agent preset (from models.json or agents/ dir) | none |
 | `--model <name>` | Model override for any backend | backend default |
 | `--skills <names>` | Comma-separated skill names to inject | auto-detected |

@@ -87,6 +87,7 @@ func ParseJSONStreamInternal(r io.Reader, warnFn func(string), infoFn func(strin
 		claudeMessage   string
 		geminiBuffer    strings.Builder
 		opencodeMessage strings.Builder
+		grokBuffer      strings.Builder
 	)
 
 	for {
@@ -137,6 +138,8 @@ func ParseJSONStreamInternal(r io.Reader, warnFn func(string), infoFn func(strin
 		}
 		isGemini := (event.Type == "init" && event.SessionID != "") || event.Role != "" || event.Delta != nil || event.Status != ""
 		isOpencode := event.OpencodeSessionID != "" && len(event.Part) > 0
+		isGrok := !isCodex && !isClaude && !isGemini && !isOpencode &&
+			(event.Type == "text" || event.Type == "thought" || event.Type == "end")
 
 		// Handle Opencode events first (most specific detection)
 		if isOpencode {
@@ -274,11 +277,33 @@ func ParseJSONStreamInternal(r io.Reader, warnFn func(string), infoFn func(strin
 			continue
 		}
 
+		// Handle Grok events (streaming-json: thought/text/end)
+		if isGrok {
+			switch event.Type {
+			case "text":
+				if event.Data != "" {
+					grokBuffer.WriteString(event.Data)
+					notifyMessage()
+				}
+			case "thought":
+				// Reasoning tokens; not part of the final message.
+			case "end":
+				if event.GrokSessionID != "" && threadID == "" {
+					threadID = event.GrokSessionID
+				}
+				infoFn(fmt.Sprintf("Parsed Grok end event #%d stop_reason=%s session=%s", totalEvents, event.StopReason, event.GrokSessionID))
+				notifyComplete()
+			}
+			continue
+		}
+
 		// Unknown event format from other backends (turn.started/assistant/user); ignore.
 		continue
 	}
 
 	switch {
+	case grokBuffer.Len() > 0:
+		message = grokBuffer.String()
 	case opencodeMessage.Len() > 0:
 		message = opencodeMessage.String()
 	case geminiBuffer.Len() > 0:

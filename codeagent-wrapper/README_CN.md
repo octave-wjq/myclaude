@@ -129,7 +129,7 @@ EOF
 
 | 参数 | 说明 |
 |------|------|
-| `--backend <name>` | 后端选择（codex/claude/gemini/opencode） |
+| `--backend <name>` | 后端选择（codex/claude/gemini/grok/opencode） |
 | `--model <name>` | 覆盖模型 |
 | `--agent <name>` | Agent 预设名（来自 models.json 或 ~/.codeagent/agents/） |
 | `--prompt-file <path>` | 从文件读取 prompt |
@@ -168,7 +168,7 @@ skip-permissions: false
 
 | 变量 | 说明 |
 |------|------|
-| `CODEAGENT_BACKEND` | 后端名（codex/claude/gemini/opencode） |
+| `CODEAGENT_BACKEND` | 后端名（codex/claude/gemini/grok/opencode） |
 | `CODEAGENT_MODEL` | 模型名 |
 | `CODEAGENT_AGENT` | Agent 预设名 |
 | `CODEAGENT_PROMPT_FILE` | Prompt 文件路径 |
@@ -233,6 +233,7 @@ skip-permissions: false
 | `codex` | `codex e ...` | 默认添加 `--dangerously-bypass-approvals-and-sandbox`；设 `CODEX_BYPASS_SANDBOX=false` 关闭 |
 | `claude` | `claude -p ... --output-format stream-json` | 默认跳过权限并禁用 setting-sources 防止递归；设 `CODEAGENT_SKIP_PERMISSIONS=false` 开启权限；自动读取 `~/.claude/settings.json` 中的 env 和 model |
 | `gemini` | `gemini -o stream-json -y ...` | 自动从 `~/.gemini/.env` 加载环境变量（GEMINI_API_KEY, GEMINI_MODEL 等） |
+| `grok` | `grok --output-format streaming-json -p ...` | 通过 `grok login`（OAuth）认证；默认追加 `--permission-mode bypassPermissions`，设 `CODEAGENT_SKIP_PERMISSIONS=false` 可关闭；可选 `XAI_BASE_URL`/`XAI_API_KEY` |
 | `opencode` | `opencode run --format json` | — |
 
 ## 项目结构
@@ -241,7 +242,7 @@ skip-permissions: false
 cmd/codeagent-wrapper/main.go   # CLI 入口
 internal/
   app/          # CLI 命令定义、参数解析、主逻辑编排
-  backend/      # 后端抽象与实现（codex/claude/gemini/opencode）
+  backend/      # 后端抽象与实现（codex/claude/gemini/grok/opencode）
   config/       # 配置加载、agent 解析、viper 绑定
   executor/     # 任务执行引擎：单任务/并行/worktree/技能注入
   logger/       # 结构化日志系统

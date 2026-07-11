@@ -1046,7 +1046,7 @@ function printPostInstallInfo(installDir) {
 
   // Check backend CLIs
   const whichCmd = process.platform === "win32" ? "where" : "which";
-  const backends = ["codex", "claude", "gemini", "opencode"];
+  const backends = ["codex", "claude", "gemini", "grok", "opencode"];
   const detected = {};
   for (const name of backends) {
     try {

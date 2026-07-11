@@ -4,7 +4,7 @@
 [![Claude Code](https://img.shields.io/badge/Claude-Code-blue)](https://claude.ai/code)
 [![Version](https://img.shields.io/badge/Version-6.x-green)](https://github.com/stellarlinkco/myclaude)
 
-> AI 驱动的开发自动化 - 多后端执行架构 (Codex/Claude/Gemini/OpenCode)
+> AI 驱动的开发自动化 - 多后端执行架构 (Codex/Claude/Gemini/Grok/OpenCode)
 
 ## 快速开始
 
