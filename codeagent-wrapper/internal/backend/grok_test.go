@@ -63,7 +63,20 @@ func TestGrokBuildArgs(t *testing.T) {
 			"--reasoning-effort", "high",
 			"--allow", "Edit",
 			"--deny", "Bash",
-			"-p", "-",
+			"--prompt-file", "/dev/stdin",
+		}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("got %v, want %v", got, want)
+		}
+	})
+
+	t.Run("stdin mode uses prompt-file, not literal dash", func(t *testing.T) {
+		cfg := &config.Config{Mode: "new"}
+		got := b.BuildArgs(cfg, "-")
+		want := []string{
+			"--output-format", "streaming-json",
+			"--permission-mode", "bypassPermissions",
+			"--prompt-file", "/dev/stdin",
 		}
 		if !reflect.DeepEqual(got, want) {
 			t.Fatalf("got %v, want %v", got, want)

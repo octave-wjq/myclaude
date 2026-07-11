@@ -33,9 +33,10 @@ func (GrokBackend) BuildArgs(cfg *config.Config, targetArg string) []string {
 	return buildGrokArgs(cfg, targetArg)
 }
 
-// buildGrokArgs builds the grok CLI argument list. grok is Claude-Code
-// compatible: single-turn headless prompt via -p (accepts "-" for stdin),
-// streaming JSON output, and per-tool permission rules.
+// buildGrokArgs builds the grok CLI argument list. grok runs headless with
+// streaming JSON output and per-tool permission rules. Unlike codex/claude,
+// grok's -p treats "-" as a literal prompt rather than a stdin sentinel, so
+// stdin mode is wired through --prompt-file /dev/stdin instead.
 func buildGrokArgs(cfg *config.Config, targetArg string) []string {
 	if cfg == nil {
 		return nil
@@ -72,8 +73,14 @@ func buildGrokArgs(cfg *config.Config, targetArg string) []string {
 		args = append(args, "-r", cfg.SessionID)
 	}
 
-	// Single-turn headless prompt; "-" reads the prompt from stdin.
-	args = append(args, "-p", targetArg)
+	// Single-turn headless prompt. The wrapper signals stdin mode with "-",
+	// but grok's -p would treat "-" as the literal prompt text, so read the
+	// piped task from /dev/stdin instead.
+	if targetArg == "-" {
+		args = append(args, "--prompt-file", "/dev/stdin")
+	} else {
+		args = append(args, "-p", targetArg)
+	}
 
 	return args
 }
