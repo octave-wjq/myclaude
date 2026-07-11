@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_CN.md)
 
-A multi-backend AI code agent CLI wrapper written in Go. Provides a unified CLI entry point wrapping different AI tool backends (Codex / Claude / Gemini / OpenCode) with consistent flags, configuration, skill injection, and session resumption.
+A multi-backend AI code agent CLI wrapper written in Go. Provides a unified CLI entry point wrapping different AI tool backends (Codex / Claude / Gemini / Grok / OpenCode) with consistent flags, configuration, skill injection, and session resumption.
 
 Entry point: `cmd/codeagent-wrapper/main.go` (binary: `codeagent-wrapper`).
 
@@ -129,7 +129,7 @@ EOF
 
 | Flag | Description |
 |------|-------------|
-| `--backend <name>` | Backend selection (codex/claude/gemini/opencode) |
+| `--backend <name>` | Backend selection (codex/claude/gemini/grok/opencode) |
 | `--model <name>` | Model override |
 | `--agent <name>` | Agent preset name (from models.json or ~/.codeagent/agents/) |
 | `--prompt-file <path>` | Read prompt from file |
@@ -168,7 +168,7 @@ Read via viper with automatic `-` to `_` mapping:
 
 | Variable | Description |
 |----------|-------------|
-| `CODEAGENT_BACKEND` | Backend name (codex/claude/gemini/opencode) |
+| `CODEAGENT_BACKEND` | Backend name (codex/claude/gemini/grok/opencode) |
 | `CODEAGENT_MODEL` | Model name |
 | `CODEAGENT_AGENT` | Agent preset name |
 | `CODEAGENT_PROMPT_FILE` | Prompt file path |
@@ -233,6 +233,7 @@ This project does not embed model capabilities. It requires the corresponding CL
 | `codex` | `codex e ...` | Adds `--dangerously-bypass-approvals-and-sandbox` by default; set `CODEX_BYPASS_SANDBOX=false` to disable |
 | `claude` | `claude -p ... --output-format stream-json` | Skips permissions and disables setting-sources to prevent recursion; set `CODEAGENT_SKIP_PERMISSIONS=false` to enable prompts; auto-reads env and model from `~/.claude/settings.json` |
 | `gemini` | `gemini -o stream-json -y ...` | Auto-loads env vars from `~/.gemini/.env` (GEMINI_API_KEY, GEMINI_MODEL, etc.) |
+| `grok` | `grok --output-format streaming-json -p ...` | Authenticates via `grok login` (OAuth); adds `--permission-mode bypassPermissions` by default, set `CODEAGENT_SKIP_PERMISSIONS=false` to disable; optional `XAI_BASE_URL`/`XAI_API_KEY` |
 | `opencode` | `opencode run --format json` | — |
 
 ## Project Structure
@@ -241,7 +242,7 @@ This project does not embed model capabilities. It requires the corresponding CL
 cmd/codeagent-wrapper/main.go   # CLI entry point
 internal/
   app/          # CLI command definitions, argument parsing, main orchestration
-  backend/      # Backend abstraction and implementations (codex/claude/gemini/opencode)
+  backend/      # Backend abstraction and implementations (codex/claude/gemini/grok/opencode)
   config/       # Config loading, agent resolution, viper bindings
   executor/     # Task execution engine: single/parallel/worktree/skill injection
   logger/       # Structured logging system

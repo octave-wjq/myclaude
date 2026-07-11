@@ -1279,7 +1279,7 @@ def print_post_install_info(ctx: Dict[str, Any]) -> None:
     )
 
     # Check backend CLIs
-    backends = ["codex", "claude", "gemini", "opencode"]
+    backends = ["codex", "claude", "gemini", "grok", "opencode"]
     detected = {name: shutil.which(name) is not None for name in backends}
 
     print("\nSetup Complete!")

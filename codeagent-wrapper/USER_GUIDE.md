@@ -46,7 +46,7 @@ EOF
 
 | Flag | Description |
 |------|-------------|
-| `--backend <name>` | Select backend (codex/claude/gemini/opencode) |
+| `--backend <name>` | Select backend (codex/claude/gemini/grok/opencode) |
 | `--model <name>` | Override model for this invocation |
 | `--agent <name>` | Agent preset name (from ~/.codeagent/models.json) |
 | `--config <path>` | Path to models.json config file |

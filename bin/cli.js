@@ -10,7 +10,7 @@ const readline = require("readline");
 const zlib = require("zlib");
 const { spawn, spawnSync } = require("child_process");
 
-const REPO = { owner: "stellarlinkco", name: "myclaude" };
+const REPO = { owner: "octave-wjq", name: "myclaude" };
 const API_HEADERS = {
   "User-Agent": "myclaude-npx",
   Accept: "application/vnd.github+json",
@@ -60,12 +60,12 @@ function printHelp() {
       "myclaude (npx installer)",
       "",
       "Usage:",
-      "  npx github:stellarlinkco/myclaude",
-      "  npx github:stellarlinkco/myclaude --list",
-      "  npx github:stellarlinkco/myclaude --update",
-      "  npx github:stellarlinkco/myclaude --install-dir ~/.claude --force",
-      "  npx github:stellarlinkco/myclaude uninstall",
-      "  npx github:stellarlinkco/myclaude uninstall --module bmad,do -y",
+      "  npx github:octave-wjq/myclaude",
+      "  npx github:octave-wjq/myclaude --list",
+      "  npx github:octave-wjq/myclaude --update",
+      "  npx github:octave-wjq/myclaude --install-dir ~/.claude --force",
+      "  npx github:octave-wjq/myclaude uninstall",
+      "  npx github:octave-wjq/myclaude uninstall --module bmad,do -y",
       "",
       "Options:",
       "  --install-dir <path>   Default: ~/.claude",
@@ -1046,7 +1046,7 @@ function printPostInstallInfo(installDir) {
 
   // Check backend CLIs
   const whichCmd = process.platform === "win32" ? "where" : "which";
-  const backends = ["codex", "claude", "gemini", "opencode"];
+  const backends = ["codex", "claude", "gemini", "grok", "opencode"];
   const detected = {};
   for (const name of backends) {
     try {

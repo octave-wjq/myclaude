@@ -7,7 +7,7 @@
 [![Claude Code](https://img.shields.io/badge/Claude-Code-blue)](https://claude.ai/code)
 [![Version](https://img.shields.io/badge/Version-6.x-green)](https://github.com/stellarlinkco/myclaude)
 
-> AI-powered development automation with multi-backend execution (Codex/Claude/Gemini/OpenCode)
+> AI-powered development automation with multi-backend execution (Codex/Claude/Gemini/Grok/OpenCode)
 
 ## Quick Start
 
@@ -95,7 +95,7 @@ Edit `config.json` to enable/disable modules:
 | Role | Agent | Responsibility |
 |------|-------|----------------|
 | **Orchestrator** | Claude Code | Planning, context gathering, verification |
-| **Executor** | codeagent-wrapper | Code editing, test execution (Codex/Claude/Gemini/OpenCode) |
+| **Executor** | codeagent-wrapper | Code editing, test execution (Codex/Claude/Gemini/Grok/OpenCode) |
 
 ## Backend CLI Requirements
 
