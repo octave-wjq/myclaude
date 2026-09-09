@@ -40,7 +40,7 @@ The original optional module menu remains available with `--legacy`. Existing un
 
 ### Available Skills
 
-Individual skills can be installed separately via `npx github:stellarlinkco/myclaude --list` (skills bundled in modules like do, omo, sparv are listed above):
+Individual skills can be installed separately via `npx --yes github:octave-wjq/myclaude --legacy --list` (skills bundled in modules like do, omo, sparv are listed above):
 
 | Skill | Description |
 |-------|-------------|
@@ -58,16 +58,16 @@ Individual skills can be installed separately via `npx github:stellarlinkco/mycl
 
 ```bash
 # Interactive installer (recommended)
-npx github:stellarlinkco/myclaude
+npx --yes github:octave-wjq/myclaude --legacy
 
 # List installable items (modules / skills / wrapper)
-npx github:stellarlinkco/myclaude --list
+npx --yes github:octave-wjq/myclaude --legacy --list
 
 # Detect installed modules and update from GitHub
-npx github:stellarlinkco/myclaude --update
+npx --yes github:octave-wjq/myclaude --legacy --update
 
 # Custom install directory / overwrite
-npx github:stellarlinkco/myclaude --install-dir ~/.claude --force
+npx --yes github:octave-wjq/myclaude --legacy --install-dir ~/.claude --force
 ```
 
 `--update` detects already installed modules in the target install dir (defaults to `~/.claude`, via `installed_modules.json` when present) and updates them from GitHub (latest release) by overwriting the module files.
@@ -142,13 +142,13 @@ Edit `config.json` to enable/disable modules:
 **Codex wrapper not found:**
 ```bash
 # Select: codeagent-wrapper
-npx github:stellarlinkco/myclaude
+npx --yes github:octave-wjq/myclaude --legacy
 ```
 
 **Module not loading:**
 ```bash
 cat ~/.claude/installed_modules.json
-npx github:stellarlinkco/myclaude --force
+npx --yes github:octave-wjq/myclaude --legacy --force
 ```
 
 **Backend CLI errors:**

@@ -37,7 +37,7 @@ npx --yes github:octave-wjq/myclaude
 
 ### 可用技能
 
-可通过 `npx github:stellarlinkco/myclaude --list` 单独安装技能（模块内置技能如 do、omo、sparv 见上表）：
+可通过 `npx --yes github:octave-wjq/myclaude --legacy --list` 单独安装技能（模块内置技能如 do、omo、sparv 见上表）：
 
 | 技能 | 描述 |
 |------|------|
@@ -198,16 +198,16 @@ npx --yes github:octave-wjq/myclaude
 
 ```bash
 # 交互式安装器（推荐）
-npx github:stellarlinkco/myclaude
+npx --yes github:octave-wjq/myclaude --legacy
 
 # 列出可安装项（module:* / skill:* / codeagent-wrapper）
-npx github:stellarlinkco/myclaude --list
+npx --yes github:octave-wjq/myclaude --legacy --list
 
 # 检测已安装 modules 并从 GitHub 更新
-npx github:stellarlinkco/myclaude --update
+npx --yes github:octave-wjq/myclaude --legacy --update
 
 # 指定安装目录 / 强制覆盖
-npx github:stellarlinkco/myclaude --install-dir ~/.claude --force
+npx --yes github:octave-wjq/myclaude --legacy --install-dir ~/.claude --force
 ```
 
 `--update` 会在目标安装目录（默认 `~/.claude`，优先读取 `installed_modules.json`）检测已安装 modules，并从 GitHub 拉取最新发布版本覆盖更新。
@@ -254,13 +254,13 @@ npx github:stellarlinkco/myclaude --install-dir ~/.claude --force
 **Codex wrapper 未找到：**
 ```bash
 # 选择：codeagent-wrapper
-npx github:stellarlinkco/myclaude
+npx --yes github:octave-wjq/myclaude --legacy
 ```
 
 **模块未加载：**
 ```bash
 cat ~/.claude/installed_modules.json
-npx github:stellarlinkco/myclaude --force
+npx --yes github:octave-wjq/myclaude --legacy --force
 ```
 
 ## FAQ
