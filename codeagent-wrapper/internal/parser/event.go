@@ -37,7 +37,9 @@ type GeminiEvent struct {
 // to avoid multiple JSON unmarshal operations per event.
 type UnifiedEvent struct {
 	// Common fields
-	Type string `json:"type"`
+	Type    string   `json:"type"`
+	IsError bool     `json:"is_error,omitempty"`
+	Errors  []string `json:"errors,omitempty"`
 
 	// Codex-specific fields
 	ThreadID string          `json:"thread_id,omitempty"`

@@ -16,12 +16,9 @@ func (GrokBackend) Command() string { return "grok" }
 func (GrokBackend) Env(baseURL, apiKey string) map[string]string {
 	baseURL = strings.TrimSpace(baseURL)
 	apiKey = strings.TrimSpace(apiKey)
-	if baseURL == "" && apiKey == "" {
-		return nil
-	}
-	env := make(map[string]string, 2)
+	env := map[string]string{"CODEAGENT_WORKER": "1"}
 	if baseURL != "" {
-		env["XAI_BASE_URL"] = baseURL
+		env["GROK_MODELS_BASE_URL"] = baseURL
 	}
 	if apiKey != "" {
 		env["XAI_API_KEY"] = apiKey
@@ -42,20 +39,27 @@ func buildGrokArgs(cfg *config.Config, targetArg string) []string {
 		return nil
 	}
 
-	args := []string{"--output-format", "streaming-json"}
+	args := []string{"--output-format", "streaming-messages-json", "--no-subagents", "--no-plan",
+		"--rules", "You are a delegated worker. Implement and test the assigned work directly. Do not invoke codeagent, Claude, Codex or other agents. Preserve unrelated changes and report verification results."}
 
-	// Default to bypassing approvals unless CODEAGENT_SKIP_PERMISSIONS=false.
-	if cfg.SkipPermissions || cfg.Yolo || config.EnvFlagDefaultTrue("CODEAGENT_SKIP_PERMISSIONS") {
-		logWarnFn("YOLO/skip-permissions enabled: grok running with bypassPermissions")
+	// Headless ask mode cancels edits; auto retains Grok's safety checks.
+	if cfg.SkipPermissions || cfg.Yolo || config.EnvFlagEnabled("CODEAGENT_SKIP_PERMISSIONS") {
 		args = append(args, "--permission-mode", "bypassPermissions")
+	} else {
+		args = append(args, "--permission-mode", "auto")
 	}
 
-	if model := strings.TrimSpace(cfg.Model); model != "" {
-		args = append(args, "-m", model)
+	model := strings.TrimSpace(cfg.Model)
+	if model == "" {
+		model = "grok-4.6"
 	}
-
-	if effort := strings.TrimSpace(cfg.ReasoningEffort); effort != "" {
-		args = append(args, "--reasoning-effort", effort)
+	effort := strings.TrimSpace(cfg.ReasoningEffort)
+	if effort == "" {
+		effort = "low"
+	}
+	args = append(args, "--model", model, "--reasoning-effort", effort)
+	if cfg.WorkDir != "" {
+		args = append(args, "--cwd", cfg.WorkDir)
 	}
 
 	for _, tool := range cfg.AllowedTools {

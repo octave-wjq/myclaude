@@ -9,8 +9,18 @@
 ## 快速开始
 
 ```bash
-npx github:stellarlinkco/myclaude
+npx --yes github:octave-wjq/myclaude
 ```
+
+本 fork 默认安装轻量 codeagent worker：Claude 编排，Grok 4.6 执行实现和测试，low 推理、auto 权限、最多 3 个并发任务。使用当前 Grok 的 `streaming-messages-json` 协议，禁止 worker 再编排其他代理。codeagent 是 CLI，通过 shell 调用，无需额外 MCP 服务。
+
+**已经安装过 myclaude 的机器也运行同一条命令**，无需先卸载；`--update` 等效。安装器会覆盖旧二进制、Claude/共享 codeagent skill 和内置 worker 默认值，并维护 CLAUDE.md 中专属区块。保留 Claude settings、后端凭据、自定义代理及其他指令。每次更新前备份到 `~/.codeagent/backups/`，写入失败自动回滚；安装器不重新安装大型框架或全局 hooks。
+
+要求 Node.js 18+、Git、curl，以及已经安装并登录的 Grok CLI（`grok login`）。将 `~/.claude/bin` 和 Grok CLI 加入 PATH。Claude 的渠道与令牌由各机器自行配置，安装器不会复制本机凭据。更新后重启 Claude/Codex 会话以重新加载 skill。
+
+默认下载与 npm 包版本一致的 Release 二进制，验证 SHA256 和版本后再覆盖。首次发布尚未提供资产或需要本地构建时，可运行 `npx --yes github:octave-wjq/myclaude --build-from-source`（另需 Go 1.21+）。固定版本：`npx --yes github:octave-wjq/myclaude#v6.8.3`。存在非 JSON 的 `~/.codeagent/config.*` 时请先迁移为 config.json，安装器会明确报错，不覆盖冲突配置。
+
+以下原版模块为可选功能：运行 `npx --yes github:octave-wjq/myclaude --legacy` 打开原菜单。默认更新不会删除已有的其他模块；可按需用原卸载命令移除。Grok 整链已在 macOS 验证；Release 提供六个平台资产，Windows 的 `/dev/stdin` 管道兼容性尚未验证，建议 Windows 使用 WSL。
 
 ## 模块概览
 

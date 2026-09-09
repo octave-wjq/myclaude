@@ -86,7 +86,7 @@ func ValidateAgentName(name string) error {
 }
 
 const (
-	DefaultMaxParallelWorkers = 10
+	DefaultMaxParallelWorkers = 3
 	maxParallelWorkersLimit   = 100
 )
 

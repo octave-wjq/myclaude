@@ -236,6 +236,11 @@ func ParseJSONStreamInternal(r io.Reader, warnFn func(string), infoFn func(strin
 			if event.SessionID != "" && threadID == "" {
 				threadID = event.SessionID
 			}
+			if event.IsError {
+				warnFn(fmt.Sprintf("Backend reported %s: %s %s", event.Subtype, event.Result, strings.Join(event.Errors, "; ")))
+				notifyComplete()
+				continue
+			}
 
 			infoFn(fmt.Sprintf("Parsed Claude event #%d type=%s subtype=%s result_len=%d", totalEvents, event.Type, event.Subtype, len(event.Result)))
 

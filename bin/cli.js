@@ -29,6 +29,8 @@ function parseArgs(argv) {
     tag: null,
     module: null,
     yes: false,
+    legacy: false,
+    buildFromSource: false,
   };
 
   let i = 0;
@@ -44,6 +46,8 @@ function parseArgs(argv) {
     else if (a === "--dry-run") out.dryRun = true;
     else if (a === "--list") out.list = true;
     else if (a === "--update") out.update = true;
+    else if (a === "--legacy") out.legacy = true;
+    else if (a === "--build-from-source") out.buildFromSource = true;
     else if (a === "--tag") out.tag = argv[++i];
     else if (a === "--module") out.module = argv[++i];
     else if (a === "-y" || a === "--yes") out.yes = true;
@@ -72,7 +76,10 @@ function printHelp() {
       "  --force                Overwrite existing files",
       "  --dry-run              Print actions only",
       "  --list                 List installable items and exit",
-      "  --update               Update already installed modules",
+      "  --update               Refresh the worker (legacy: installed modules)",
+      "  Default install/update refreshes the Grok worker and skill, with backups.",
+      "  --legacy               Open the original optional module installer",
+      "  --build-from-source    Build the packaged wrapper locally (requires Go)",
       "  --tag <tag>            Install a specific GitHub tag",
       "  --module <names>       For uninstall: comma-separated module names",
       "  -y, --yes              For uninstall: skip confirmation prompt",
@@ -1162,6 +1169,15 @@ async function main() {
     throw new Error(`Unknown command: ${args.command}`);
   }
   if (args.list && args.update) throw new Error("Cannot combine --list and --update");
+
+  if (args.command === "install" && !args.legacy && !args.list) {
+    const { installWorker } = require("./worker-install");
+    await installWorker({
+      installDir, repoRoot: repoRootFromHere(), dryRun: args.dryRun,
+      tag: args.tag, buildFromSource: args.buildFromSource,
+    });
+    return;
+  }
 
   if (args.command === "uninstall") {
     const config = readLocalConfig();

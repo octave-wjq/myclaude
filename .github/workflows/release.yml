@@ -12,10 +12,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    # Tests run and are reported, but a failure must not block the release.
-    # (Pre-existing claude BuildArgs tests lag behind the --setting-sources
-    # removal; tracked separately and unrelated to the release artifacts.)
-    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,6 +24,13 @@ jobs:
       - name: Run tests
         working-directory: codeagent-wrapper
         run: go test -v -coverprofile=cover.out ./...
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Test installer
+        run: npm test
 
       - name: Check coverage
         working-directory: codeagent-wrapper
@@ -133,6 +136,7 @@ jobs:
           mkdir -p release
           find artifacts -type f -name "codeagent-wrapper-*" -exec mv {} release/ \;
           cp install.sh install.bat release/
+          (cd release && sha256sum codeagent-wrapper-* > SHA256SUMS)
           ls -la release/
 
       - name: Create Release
