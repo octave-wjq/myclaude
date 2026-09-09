@@ -18,7 +18,7 @@ npx --yes github:octave-wjq/myclaude
 
 要求 Node.js 18+、Git、curl，以及已经安装并登录的 Grok CLI（`grok login`）。将 `~/.claude/bin` 和 Grok CLI 加入 PATH。Claude 的渠道与令牌由各机器自行配置，安装器不会复制本机凭据。更新后重启 Claude/Codex 会话以重新加载 skill。
 
-默认下载与 npm 包版本一致的 Release 二进制，验证 SHA256 和版本后再覆盖。首次发布尚未提供资产或需要本地构建时，可运行 `npx --yes github:octave-wjq/myclaude --build-from-source`（另需 Go 1.21+）。固定版本：`npx --yes github:octave-wjq/myclaude#v6.8.3`。存在非 JSON 的 `~/.codeagent/config.*` 时请先迁移为 config.json，安装器会明确报错，不覆盖冲突配置。
+默认下载与 npm 包版本一致的 Release 二进制，验证 SHA256 和版本后再覆盖。首次发布尚未提供资产或需要本地构建时，可运行 `npx --yes github:octave-wjq/myclaude --build-from-source`（另需 Go 1.25+）。固定版本：`npx --yes github:octave-wjq/myclaude#v6.8.4`。存在非 JSON 的 `~/.codeagent/config.*` 时请先迁移为 config.json，安装器会明确报错，不覆盖冲突配置。
 
 以下原版模块为可选功能：运行 `npx --yes github:octave-wjq/myclaude --legacy` 打开原菜单。默认更新不会删除已有的其他模块；可按需用原卸载命令移除。Grok 整链已在 macOS 验证；Release 提供六个平台资产，Windows 的 `/dev/stdin` 管道兼容性尚未验证，建议 Windows 使用 WSL。
 

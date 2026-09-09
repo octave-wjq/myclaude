@@ -21,7 +21,7 @@ This fork installs a lightweight codeagent worker by default: Claude orchestrate
 
 Prerequisites: Node.js 18+, Git, curl, and an installed/authenticated Grok CLI (`grok login`). Add `~/.claude/bin` and Grok to PATH. Configure Claude credentials on each machine; the installer never copies the publisher's credentials. Restart Claude/Codex sessions after updating.
 
-Release binaries are pinned to the package version and verified with SHA256 and `--version` before replacement. To build the packaged source locally, append `--build-from-source` (Go 1.21+ required). To pin a release: `npx --yes github:octave-wjq/myclaude#v6.8.3`. Existing non-JSON `~/.codeagent/config.*` files must be migrated to config.json first; conflicting configurations fail explicitly without overwriting files.
+Release binaries are pinned to the package version and verified with SHA256 and `--version` before replacement. To build the packaged source locally, append `--build-from-source` (Go 1.25+ required). To pin a release: `npx --yes github:octave-wjq/myclaude#v6.8.4`. Existing non-JSON `~/.codeagent/config.*` files must be migrated to config.json first; conflicting configurations fail explicitly without overwriting files.
 
 The original optional module menu remains available with `--legacy`. Existing unrelated modules are retained and can be removed with the original uninstall command. The Grok end-to-end flow was verified on macOS. Six platform binaries are published; Windows `/dev/stdin` pipeline compatibility is not verified, so use WSL for Grok.
 
