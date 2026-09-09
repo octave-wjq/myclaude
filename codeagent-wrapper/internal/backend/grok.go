@@ -1,6 +1,8 @@
 package backend
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 
 	config "codeagent-wrapper/internal/config"
@@ -8,8 +10,19 @@ import (
 
 type GrokBackend struct{}
 
-func (GrokBackend) Name() string    { return "grok" }
-func (GrokBackend) Command() string { return "grok" }
+func (GrokBackend) Name() string { return "grok" }
+
+func (GrokBackend) Command() string {
+	// Existing Claude sessions can retain a PATH that bypasses this launcher.
+	// An installed launcher owns the machine's Grok-only proxy configuration.
+	if home, err := os.UserHomeDir(); err == nil {
+		launcher := filepath.Join(home, ".grok", "bin", "grok-proxy-wrapper")
+		if _, err := os.Lstat(launcher); !os.IsNotExist(err) {
+			return launcher // Broken launchers must fail explicitly, not bypass the proxy.
+		}
+	}
+	return "grok"
+}
 
 // Env maps optional base URL / API key to grok's xAI environment variables.
 // grok normally authenticates via `grok login` (OAuth), so both may be empty.
@@ -17,6 +30,11 @@ func (GrokBackend) Env(baseURL, apiKey string) map[string]string {
 	baseURL = strings.TrimSpace(baseURL)
 	apiKey = strings.TrimSpace(apiKey)
 	env := map[string]string{"CODEAGENT_WORKER": "1"}
+	// Grok counts total attempts despite the variable's name: 2 permits one
+	// retry instead of 15 attempts. Preserve an explicit override, including zero.
+	if strings.TrimSpace(os.Getenv("GROK_MAX_RETRIES")) == "" {
+		env["GROK_MAX_RETRIES"] = "2"
+	}
 	if baseURL != "" {
 		env["GROK_MODELS_BASE_URL"] = baseURL
 	}

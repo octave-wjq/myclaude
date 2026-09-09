@@ -31,4 +31,6 @@ Use `dependencies: task_id` only for real dependencies. Default concurrency is 3
 
 Workers use Grok's `auto` permission mode: routine work proceeds only when its safety check allows it; denied actions fail clearly in headless mode. Use `--skip-permissions` only with user authorization. There is no implicit execution timeout; the caller must retain the process handle and cancel stalled work explicitly. Keep the returned process/log and SESSION_ID; inspect progress instead of blindly restarting. Retry a transient error once; fix authentication/permission/configuration failures before retrying. Report failures honestly.
 
+Network failures retry once by default (`GROK_MAX_RETRIES` explicitly overrides this). An installed `~/.grok/bin/grok-proxy-wrapper` takes precedence over PATH, including in existing Claude sessions. If a task stalls, inspect `~/.grok/logs/unified.jsonl` and the proxy service logs; connection retries are not model thinking. Keep HTTP and SOCKS proxy schemes matched to their actual listener ports.
+
 This installation uses a CLI, not an MCP server; call it through the shell. Adding an MCP adapter would add startup/context overhead without improving this workflow.
