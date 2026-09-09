@@ -44,7 +44,7 @@ func TestGrokArgs(t *testing.T) {
 		want   []string
 		forbid []string
 	}{
-		{"defaults", config.Config{}, "do work", []string{"--model grok-4.6", "--reasoning-effort low", "-p do work", "--no-subagents", "--no-plan", "--permission-mode auto", "--output-format streaming-messages-json"}, []string{"--permission-mode bypassPermissions", "--resume", "--prompt-file"}},
+		{"defaults", config.Config{}, "do work", []string{"--model grok-4.6", "--reasoning-effort xhigh", "-p do work", "--no-subagents", "--no-plan", "--permission-mode auto", "--output-format streaming-messages-json"}, []string{"--permission-mode bypassPermissions", "--resume", "--prompt-file"}},
 		{"stdin", config.Config{WorkDir: "/tmp/path with spaces"}, "-", []string{"--prompt-file /dev/stdin", "--cwd /tmp/path with spaces"}, []string{"-p -"}},
 		{"resume", config.Config{Mode: "resume", SessionID: "session-1", Model: " grok-4.5 ", ReasoningEffort: " medium ", SkipPermissions: true, AllowedTools: []string{"read_file", "grep"}, DisallowedTools: []string{"write", "web_search"}}, "follow up", []string{"-r session-1", "--model grok-4.5", "--reasoning-effort medium", "--permission-mode bypassPermissions", "--allow read_file --allow grep", "--deny write --deny web_search"}, nil},
 		{"yolo", config.Config{Yolo: true}, "task", []string{"--permission-mode bypassPermissions"}, nil},

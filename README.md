@@ -15,13 +15,13 @@
 npx --yes github:octave-wjq/myclaude
 ```
 
-This fork installs a lightweight codeagent worker by default: Claude orchestrates, Grok 4.6 implements and tests, with low reasoning effort, auto permissions and up to 3 concurrent workers. It uses Grok's current `streaming-messages-json` protocol and prevents recursive delegation. codeagent is a CLI invoked through the shell; no extra MCP server is required.
+This fork installs a lightweight codeagent worker by default: Claude orchestrates, Grok 4.6 implements and tests, with xhigh reasoning effort, auto permissions and up to 3 concurrent workers. It uses Grok's current `streaming-messages-json` protocol and prevents recursive delegation. codeagent is a CLI invoked through the shell; no extra MCP server is required.
 
 **Run the same command on machines with an existing myclaude installation.** It overwrites the wrapper, Claude/shared codeagent skills and built-in worker defaults; `--update` does the same. Claude settings, backend credentials, custom agents and unrelated CLAUDE.md content are preserved. Originals are backed up under `~/.codeagent/backups/`; failed writes roll back. The default installer does not reinstall large frameworks or global hooks.
 
 Prerequisites: Node.js 18+, Git, curl, and an installed/authenticated Grok CLI (`grok login`). Add `~/.claude/bin` and Grok to PATH. Configure Claude credentials on each machine; the installer never copies the publisher's credentials. Restart Claude/Codex sessions after updating.
 
-Release binaries are pinned to the package version and verified with SHA256 and `--version` before replacement. To build the packaged source locally, append `--build-from-source` (Go 1.25+ required). To pin a release: `npx --yes github:octave-wjq/myclaude#v6.8.4`. Existing non-JSON `~/.codeagent/config.*` files must be migrated to config.json first; conflicting configurations fail explicitly without overwriting files.
+Release binaries are pinned to the package version and verified with SHA256 and `--version` before replacement. To build the packaged source locally, append `--build-from-source` (Go 1.25+ required). To pin a release: `npx --yes github:octave-wjq/myclaude#v6.8.5`. Existing non-JSON `~/.codeagent/config.*` files must be migrated to config.json first; conflicting configurations fail explicitly without overwriting files.
 
 The original optional module menu remains available with `--legacy`. Existing unrelated modules are retained and can be removed with the original uninstall command. The Grok end-to-end flow was verified on macOS. Six platform binaries are published; Windows `/dev/stdin` pipeline compatibility is not verified, so use WSL for Grok.
 

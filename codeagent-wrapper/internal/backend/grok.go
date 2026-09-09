@@ -55,7 +55,7 @@ func buildGrokArgs(cfg *config.Config, targetArg string) []string {
 	}
 	effort := strings.TrimSpace(cfg.ReasoningEffort)
 	if effort == "" {
-		effort = "low"
+		effort = "xhigh"
 	}
 	args = append(args, "--model", model, "--reasoning-effort", effort)
 	if cfg.WorkDir != "" {

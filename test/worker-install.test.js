@@ -49,11 +49,13 @@ test("JSON validation and bounded defaults preserve custom data", () => {
   for (const raw of ["null", "[]", "42", "false", "oops"]) assert.throws(() => worker.parseObject(Buffer.from(raw), "config"));
   assert.throws(() => worker.workerDefaults({}, { agents: [] }), /models.agents/);
   const config = { backend: "codex", model: "gpt-5", custom: 42 };
-  const models = { backends: { grok: { api_key: "dummy-secret" } }, agents: { work: { prompt: "keep", yolo: true }, develop: { tools: ["read"] }, bespoke: { backend: "claude" } } };
+  const models = { backends: { grok: { api_key: "dummy-secret" } }, agents: { work: { prompt: "keep", reasoning: "low", yolo: true }, develop: { tools: ["read"] }, bespoke: { backend: "claude", reasoning: "medium" } } };
   const [next, updated] = worker.workerDefaults(config, models);
   assert.deepEqual(next, { backend: "grok", custom: 42 });
   assert.equal(config.model, "gpt-5");
   assert.equal(updated.agents.work.yolo, false);
+  assert.equal(updated.agents.work.reasoning, "xhigh");
+  assert.equal(updated.agents.develop.reasoning, "xhigh");
   assert.equal(updated.agents.work.prompt, "keep");
   assert.deepEqual(updated.agents.develop.tools, ["read"]);
   assert.deepEqual(updated.agents.bespoke, models.agents.bespoke);
@@ -63,6 +65,7 @@ test("JSON validation and bounded defaults preserve custom data", () => {
 test("instruction block is idempotent and preserves surrounding content", () => {
   const first = worker.managedInstructions("Custom instructions\n", "/path with spaces/wrapper");
   assert.match(first, /Custom instructions/);
+  assert.match(first, /Grok 4.6, xhigh effort/);
   assert.equal(worker.managedInstructions(first, "/path with spaces/wrapper"), first);
   assert.ok(worker.managedInstructions(first + "after", "/new/wrapper").endsWith("after"));
   for (const broken of ["<!-- myclaude-worker:start -->", "<!-- myclaude-worker:end -->", "<!-- myclaude-worker:end --><!-- myclaude-worker:start -->"]) assert.throws(() => worker.managedInstructions(broken, "x"), /Malformed/);
@@ -74,6 +77,7 @@ test("fresh installation validates, writes all targets and records backup manife
   assert.equal(await f.get(".claude/bin/codeagent-wrapper"), payload.toString());
   assert.equal(JSON.parse(await f.get(".codeagent/config.json")).backend, "grok");
   assert.equal(JSON.parse(await f.get(".codeagent/models.json")).agents.work.model, "grok-4.6");
+  assert.equal(JSON.parse(await f.get(".codeagent/models.json")).agents.work.reasoning, "xhigh");
   assert.equal(await f.get(".claude/skills/codeagent/SKILL.md"), await f.get(".agents/skills/codeagent/SKILL.md"));
   const backups = await fs.readdir(f.file(".codeagent/backups"));
   const manifest = JSON.parse(await f.get(`.codeagent/backups/${backups[0]}/manifest.json`));

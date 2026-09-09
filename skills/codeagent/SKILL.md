@@ -13,7 +13,7 @@ Implement the requested change within the specified files, preserve unrelated ed
 TASK
 ```
 
-Default worker: Grok 4.6, low reasoning effort. Use `--reasoning-effort medium` or `high` when complexity warrants it. Explicit `--backend codex|claude|gemini|opencode` remains available; do not silently switch after failure.
+Default worker: Grok 4.6, xhigh reasoning effort. Use `--reasoning-effort low`, `medium` or `high` for an explicit override. Explicit `--backend codex|claude|gemini|opencode` remains available; do not silently switch after failure.
 
 Resume related work with `codeagent-wrapper --backend grok resume SESSION_ID - /absolute/project`, passing the follow-up through stdin. Reuse the session only for related work.
 

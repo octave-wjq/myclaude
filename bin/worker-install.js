@@ -37,13 +37,13 @@ function workerDefaults(config, models) {
   const agents = { ...models.agents };
   for (const name of WORKERS) {
     if (name !== "work" && !agents[name]) continue;
-    agents[name] = { ...agents[name], backend: "grok", model: "grok-4.6", reasoning: "low", yolo: false };
+    agents[name] = { ...agents[name], backend: "grok", model: "grok-4.6", reasoning: "xhigh", yolo: false };
   }
   return [nextConfig, { ...models, default_backend: "grok", default_model: "grok-4.6", agents }];
 }
 
 function managedInstructions(current, binary) {
-  const block = `${START}\n## Codeagent worker\nClaude orchestrates; delegate each bounded implementation AND its tests in one call to the codeagent skill. The installed command is ${JSON.stringify(binary)}. Default worker: Grok 4.6, low effort, at most 3 concurrent workers. This setting replaces older myclaude worker defaults that selected Codex/gpt-5. Use an explicit backend only when requested. Workers execute directly and never delegate again. Preserve unrelated files; report actual tests and errors. Grok auto permission mode keeps safety checks.\n${END}`;
+  const block = `${START}\n## Codeagent worker\nClaude orchestrates; delegate each bounded implementation AND its tests in one call to the codeagent skill. The installed command is ${JSON.stringify(binary)}. Default worker: Grok 4.6, xhigh effort, at most 3 concurrent workers. This setting replaces older myclaude worker defaults that selected Codex/gpt-5. Use an explicit backend only when requested. Workers execute directly and never delegate again. Preserve unrelated files; report actual tests and errors. Grok auto permission mode keeps safety checks.\n${END}`;
   const begin = current.indexOf(START);
   const end = current.indexOf(END);
   if (begin < 0 && end < 0) return `${current.trimEnd()}\n\n${block}\n`.trimStart();
