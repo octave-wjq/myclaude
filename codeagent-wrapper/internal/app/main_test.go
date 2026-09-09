@@ -2963,11 +2963,15 @@ func TestRunCodexTask_CommandNotFound(t *testing.T) {
 
 func TestRunCodexTask_StartError(t *testing.T) {
 	defer resetTestHooks()
-	tmpFile, err := os.CreateTemp("", "start-error")
+	// Windows requires an executable suffix to reach process startup.
+	tmpFile, err := os.CreateTemp("", "start-error-*.exe")
 	if err != nil {
 		t.Fatalf("failed to create temp file: %v", err)
 	}
 	defer os.Remove(tmpFile.Name())
+	if err := tmpFile.Close(); err != nil {
+		t.Fatal(err)
+	}
 
 	codexCommand = tmpFile.Name()
 	buildCodexArgsFn = func(cfg *Config, targetArg string) []string { return []string{} }
